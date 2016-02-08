@@ -1,85 +1,57 @@
 package com.massivecraft.factions.event;
 
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-
+import cn.nukkit.Player;
+import cn.nukkit.event.Cancellable;
+import cn.nukkit.event.Event;
+import cn.nukkit.event.HandlerList;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 
-import org.bukkit.entity.Player;
 
+public class PowerLossEvent extends Event implements Cancellable {
+    private static final HandlerList handlers = new HandlerList();
 
-public class PowerLossEvent extends Event implements Cancellable
-{
-	private static final HandlerList handlers = new HandlerList();
+    private boolean cancelled;
+    private Faction faction;
+    private FPlayer fplayer;
+    private String message;
 
-	private boolean cancelled;
-	private Faction faction;
-	private FPlayer fplayer;
-	private String message;
+    public static HandlerList getHandlers() {
+        return handlers;
+    }
 
-	public PowerLossEvent(Faction f, FPlayer p)
-	{
-		cancelled = false;
-		faction = f;
-		fplayer = p;
-	}
+    public PowerLossEvent(Faction f, FPlayer p) {
+        cancelled = false;
+        faction = f;
+        fplayer = p;
+    }
 
-	@Override
-	public HandlerList getHandlers()
-	{
-		return handlers;
-	}
+    public Faction getFaction() {
+        return faction;
+    }
 
-	public static HandlerList getHandlerList()
-	{
-		return handlers;
-	}
+    public String getFactionId() {
+        return faction.getId();
+    }
 
-	public Faction getFaction()
-	{
-		return faction;
-	}
+    public String getFactionTag() {
+        return faction.getTag();
+    }
 
-	public String getFactionId()
-	{
-		return faction.getId();
-	}
+    public FPlayer getFPlayer() {
+        return fplayer;
+    }
 
-	public String getFactionTag()
-	{
-		return faction.getTag();
-	}
+    public Player getPlayer() {
+        return fplayer.getPlayer();
+    }
 
-	public FPlayer getFPlayer()
-	{
-		return fplayer;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public Player getPlayer()
-	{
-		return fplayer.getPlayer();
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	@Override
-	public boolean isCancelled()
-	{
-		return cancelled;
-	}
-
-	@Override
-	public void setCancelled(boolean c)
-	{
-		this.cancelled = c;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
 }

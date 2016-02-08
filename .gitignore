@@ -15,6 +15,7 @@
 /bin
 /dist
 /*.jardesc
+/*.jar
 
 # Mac filesystem dust
 .DS_Store

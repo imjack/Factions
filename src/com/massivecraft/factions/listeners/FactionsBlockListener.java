@@ -1,259 +1,216 @@
 package com.massivecraft.factions.listeners;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockDamageEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.block.BlockPistonExtendEvent;
-import org.bukkit.event.block.BlockPistonRetractEvent;
-
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
-import com.massivecraft.factions.integration.Worldguard;
+import cn.nukkit.Player;
+import cn.nukkit.block.Block;
+import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.EventPriority;
+import cn.nukkit.event.Listener;
+import cn.nukkit.event.block.BlockBreakEvent;
+import cn.nukkit.event.block.BlockPlaceEvent;
+import cn.nukkit.level.Location;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 
 
-public class FactionsBlockListener implements Listener
-{
-	public P p;
-	public FactionsBlockListener(P p)
-	{
-		this.p = p;
-	}
-	
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onBlockPlace(BlockPlaceEvent event)
-	{
-		if (event.isCancelled()) return;
-		if ( ! event.canBuild()) return;
-		
-		// special case for flint&steel, which should only be prevented by DenyUsage list
-		if (event.getBlockPlaced().getType() == Material.FIRE)
-		{
-			return;
-		}
+public class FactionsBlockListener implements Listener {
+    public P p;
 
-		if ( ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false))
-			event.setCancelled(true);
-	}
+    public FactionsBlockListener(P p) {
+        this.p = p;
+    }
 
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onBlockBreak(BlockBreakEvent event)
-	{
-		if (event.isCancelled()) return;
+    public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck) {
+        String name = player.getName();
+        if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
 
-		if ( ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false))
-		{
-			event.setCancelled(true);
-		}
-	}
+        FPlayer me = FPlayers.i.get(name);
+        if (me.isAdminBypassing()) return true;
 
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onBlockDamage(BlockDamageEvent event)
-	{
-		if (event.isCancelled()) return;
+        FLocation loc = new FLocation(location);
+        Faction otherFaction = Board.getFactionAt(loc);
 
-		if (event.getInstaBreak() && ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false))
-		{
-			event.setCancelled(true);
-		}
-	}
+        if (otherFaction.isNone()) {
 
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onBlockPistonExtend(BlockPistonExtendEvent event)
-	{
-		if (event.isCancelled()) return;
-		if ( ! Conf.pistonProtectionThroughDenyBuild) return;
+            if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(location.getLevel().getName()))
+                return true; // This is not faction territory. Use whatever you like here.
 
-		Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
+            if (!justCheck)
+                me.msg("<b>You can't " + action + " in the wilderness.");
 
-		// target end-of-the-line empty (air) block which is being pushed into, including if piston itself would extend into air
-		Block targetBlock = event.getBlock().getRelative(event.getDirection(), event.getLength() + 1);
+            return false;
+        } else if (otherFaction.isSafeZone()) {
+            if (!Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player))
+                return true;
 
-		// if potentially pushing into air/water/lava in another territory, we need to check it out
-		if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && !canPistonMoveBlock(pistonFaction, targetBlock.getLocation()))
-		{
-			event.setCancelled(true);
-			return;
-		}
+            if (!justCheck)
+                me.msg("<b>You can't " + action + " in a safe zone.");
 
-		/*
-		 * note that I originally was testing the territory of each affected block, but since I found that pistons can only push
-		 * up to 12 blocks and the width of any territory is 16 blocks, it should be safe (and much more lightweight) to test
-		 * only the final target block as done above
-		 */
-	}
+            return false;
+        } else if (otherFaction.isWarZone()) {
+            if (!Conf.warZoneDenyBuild || Permission.MANAGE_WAR_ZONE.has(player))
+                return true;
 
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onBlockPistonRetract(BlockPistonRetractEvent event)
-	{
-		// if not a sticky piston, retraction should be fine
-		if (event.isCancelled() || !event.isSticky() || !Conf.pistonProtectionThroughDenyBuild)
-		{
-			return;
-		}
+            if (!justCheck)
+                me.msg("<b>You can't " + action + " in a war zone.");
 
-		Location targetLoc = event.getRetractLocation();
+            return false;
+        }
 
-		// if potentially retracted block is just air/water/lava, no worries
-		if (targetLoc.getBlock().isEmpty() || targetLoc.getBlock().isLiquid())
-		{
-			return;
-		}
+        Faction myFaction = me.getFaction();
+        Relation rel = myFaction.getRelationTo(otherFaction);
+        boolean online = otherFaction.hasPlayersOnline();
+        boolean pain = !justCheck && rel.confPainBuild(online);
+        boolean deny = rel.confDenyBuild(online);
 
-		Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
+        // hurt the player for building/destroying in other territory?
+        if (pain) {
+            player.attack(Conf.actionDeniedPainAmount);
 
-		if (!canPistonMoveBlock(pistonFaction, targetLoc))
-		{
-			event.setCancelled(true);
-			return;
-		}
-	}
+            if (!deny)
+                me.msg("<b>It is painful to try to " + action + " in the territory of " + otherFaction.getTag(myFaction));
+        }
 
-	private boolean canPistonMoveBlock(Faction pistonFaction, Location target)
-	{
+        // cancel building/destroying in other territory?
+        if (deny) {
+            if (!justCheck)
+                me.msg("<b>You can't " + action + " in the territory of " + otherFaction.getTag(myFaction));
 
-		Faction otherFaction = Board.getFactionAt(new FLocation(target));
+            return false;
+        }
 
-		if (pistonFaction == otherFaction)
-			return true;
+        // Also cancel and/or cause pain if player doesn't have ownership rights for this claim
+        if (Conf.ownedAreasEnabled && (Conf.ownedAreaDenyBuild || Conf.ownedAreaPainBuild) && !otherFaction.playerHasOwnershipRights(me, loc)) {
+            if (!pain && Conf.ownedAreaPainBuild && !justCheck) {
+                player.attack(Conf.actionDeniedPainAmount);
 
-		if (otherFaction.isNone())
-		{
-			if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName()))
-				return true;
+                if (!Conf.ownedAreaDenyBuild)
+                    me.msg("<b>It is painful to try to " + action + " in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
+            }
+            if (Conf.ownedAreaDenyBuild) {
+                if (!justCheck)
+                    me.msg("<b>You can't " + action + " in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
 
-			return false;
-		}
-		else if (otherFaction.isSafeZone())
-		{
-			if ( ! Conf.safeZoneDenyBuild)
-				return true;
+                return false;
+            }
+        }
 
-			return false;
-		}
-		else if (otherFaction.isWarZone())
-		{
-			if ( ! Conf.warZoneDenyBuild)
-				return true;
+        return true;
+    }
 
-			return false;
-		}
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onBlockPlace(BlockPlaceEvent event) {
+        if (event.isCancelled()) return;
 
-		Relation rel = pistonFaction.getRelationTo(otherFaction);
+        // special case for flint&steel, which should only be prevented by DenyUsage list
+        if (event.getBlock().getId() == Block.FIRE) {
+            return;
+        }
+        Block block = event.getBlock();
+        if (!playerCanBuildDestroyBlock(event.getPlayer(), new Location(block.getFloorX(), block.getFloorY(), block.getFloorZ(), 0, 0, block.getLevel()), "build", false))
+            event.setCancelled(true);
+    }
+    //// TODO: 03/01/2016 i'm unsure what this protects from
+//	@EventHandler(priority = EventPriority.NORMAL)
+//	public void onBlockDamage(BlockDamageEvent event)
+//	{
+//		if (event.isCancelled()) return;
+//
+//		if (event.getInstaBreak() && ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false))
+//		{
+//			event.setCancelled(true);
+//		}
+//	}
+    //// TODO: 03/01/2016 pistons are not implemented
+//	@EventHandler(priority = EventPriority.NORMAL)
+//	public void onBlockPistonExtend(BlockPistonExtendEvent event)
+//	{
+//		if (event.isCancelled()) return;
+//		if ( ! Conf.pistonProtectionThroughDenyBuild) return;
+//
+//		Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
+//
+//		// target end-of-the-line empty (air) block which is being pushed into, including if piston itself would extend into air
+//		Block targetBlock = event.getBlock().getRelative(event.getDirection(), event.getLength() + 1);
+//
+//		// if potentially pushing into air/water/lava in another territory, we need to check it out
+//		if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && !canPistonMoveBlock(pistonFaction, targetBlock.getLocation()))
+//		{
+//			event.setCancelled(true);
+//			return;
+//		}
+//
+//		/*
+//		 * note that I originally was testing the territory of each affected block, but since I found that pistons can only push
+//		 * up to 12 blocks and the width of any territory is 16 blocks, it should be safe (and much more lightweight) to test
+//		 * only the final target block as done above
+//		 */
+//	}
+//
+//	@EventHandler(priority = EventPriority.NORMAL)
+//	public void onBlockPistonRetract(BlockPistonRetractEvent event)
+//	{
+//		// if not a sticky piston, retraction should be fine
+//		if (event.isCancelled() || !event.isSticky() || !Conf.pistonProtectionThroughDenyBuild)
+//		{
+//			return;
+//		}
+//
+//		Location targetLoc = event.getRetractLocation();
+//
+//		// if potentially retracted block is just air/water/lava, no worries
+//		if (targetLoc.getBlock().isEmpty() || targetLoc.getBlock().isLiquid())
+//		{
+//			return;
+//		}
+//
+//		Faction pistonFaction = Board.getFactionAt(new FLocation(event.getBlock()));
+//
+//		if (!canPistonMoveBlock(pistonFaction, targetLoc))
+//		{
+//			event.setCancelled(true);
+//			return;
+//		}
+//	}
 
-		if (rel.confDenyBuild(otherFaction.hasPlayersOnline()))
-			return false;
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onBlockBreak(BlockBreakEvent event) {
+        if (event.isCancelled()) return;
+        Block block = event.getBlock();
+        if (!playerCanBuildDestroyBlock(event.getPlayer(), new Location(block.getFloorX(), block.getFloorY(), block.getFloorZ(), 0, 0, block.getLevel()), "destroy", false)) {
+            event.setCancelled(true);
+        }
+    }
 
-		return true;
-	}
+    private boolean canPistonMoveBlock(Faction pistonFaction, Location target) {
 
-	public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck)
-	{
-		String name = player.getName();
-		if (Conf.playersWhoBypassAllProtection.contains(name)) return true;
+        Faction otherFaction = Board.getFactionAt(new FLocation(target));
 
-		FPlayer me = FPlayers.i.get(name);
-		if (me.isAdminBypassing()) return true;
+        if (pistonFaction == otherFaction)
+            return true;
 
-		FLocation loc = new FLocation(location);
-		Faction otherFaction = Board.getFactionAt(loc);
+        if (otherFaction.isNone()) {
+            if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getLevel().getName()))
+                return true;
 
-		if (otherFaction.isNone())
-		{
-			if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location))
-				return true;
+            return false;
+        } else if (otherFaction.isSafeZone()) {
+            if (!Conf.safeZoneDenyBuild)
+                return true;
 
-			if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
-				return true; // This is not faction territory. Use whatever you like here.
+            return false;
+        } else if (otherFaction.isWarZone()) {
+            if (!Conf.warZoneDenyBuild)
+                return true;
 
-			if (!justCheck)
-				me.msg("<b>You can't "+action+" in the wilderness.");
+            return false;
+        }
 
-			return false;
-		}
-		else if (otherFaction.isSafeZone())
-		{
-			if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location))
-				return true;
+        Relation rel = pistonFaction.getRelationTo(otherFaction);
 
-			if (!Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player))
-				return true;
+        if (rel.confDenyBuild(otherFaction.hasPlayersOnline()))
+            return false;
 
-			if (!justCheck)
-				me.msg("<b>You can't "+action+" in a safe zone.");
-
-			return false;
-		}
-		else if (otherFaction.isWarZone())
-		{
-			if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location))
-				return true;
-
-			if (!Conf.warZoneDenyBuild || Permission.MANAGE_WAR_ZONE.has(player))
-				return true;
-
-			if (!justCheck)
-				me.msg("<b>You can't "+action+" in a war zone.");
-
-			return false;
-		}
-
-		Faction myFaction = me.getFaction();
-		Relation rel = myFaction.getRelationTo(otherFaction);
-		boolean online = otherFaction.hasPlayersOnline();
-		boolean pain = !justCheck && rel.confPainBuild(online);
-		boolean deny = rel.confDenyBuild(online);
-
-		// hurt the player for building/destroying in other territory?
-		if (pain)
-		{
-			player.damage(Conf.actionDeniedPainAmount);
-
-			if (!deny)
-				me.msg("<b>It is painful to try to "+action+" in the territory of "+otherFaction.getTag(myFaction));
-		}
-
-		// cancel building/destroying in other territory?
-		if (deny)
-		{
-			if (!justCheck)
-				me.msg("<b>You can't "+action+" in the territory of "+otherFaction.getTag(myFaction));
-
-			return false;
- 		}
-
-		// Also cancel and/or cause pain if player doesn't have ownership rights for this claim
-		if (Conf.ownedAreasEnabled && (Conf.ownedAreaDenyBuild || Conf.ownedAreaPainBuild) && !otherFaction.playerHasOwnershipRights(me, loc))
-		{
-			if (!pain && Conf.ownedAreaPainBuild && !justCheck)
-			{
-				player.damage(Conf.actionDeniedPainAmount);
-
-				if (!Conf.ownedAreaDenyBuild)
-					me.msg("<b>It is painful to try to "+action+" in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
-			}
-			if (Conf.ownedAreaDenyBuild)
-			{
-				if (!justCheck)
-					me.msg("<b>You can't "+action+" in this territory, it is owned by: "+otherFaction.getOwnerListString(loc));
-
-				return false;
-			}
-		}
-
-		return true;
-	}
+        return true;
+    }
 }

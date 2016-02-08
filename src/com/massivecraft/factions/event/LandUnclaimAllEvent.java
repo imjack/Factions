@@ -1,57 +1,44 @@
 package com.massivecraft.factions.event;
 
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-
-import com.massivecraft.factions.Faction;
+import cn.nukkit.Player;
+import cn.nukkit.event.Event;
+import cn.nukkit.event.HandlerList;
 import com.massivecraft.factions.FPlayer;
-import org.bukkit.entity.Player;
+import com.massivecraft.factions.Faction;
 
-public class LandUnclaimAllEvent extends Event
-{	
-	private static final HandlerList handlers = new HandlerList();
+public class LandUnclaimAllEvent extends Event {
+    private static final HandlerList handlers = new HandlerList();
 
-	private Faction faction;
-	private FPlayer fplayer;
+    private Faction faction;
+    private FPlayer fplayer;
 
-	public LandUnclaimAllEvent(Faction f, FPlayer p)
-	{
-		faction = f;
-		fplayer = p;
-	}
+    public static HandlerList getHandlers() {
+        return handlers;
+    }
 
-	public HandlerList getHandlers() 
-	{
-		return handlers;
-	}
+    public LandUnclaimAllEvent(Faction f, FPlayer p) {
+        faction = f;
+        fplayer = p;
+    }
 
-	public static HandlerList getHandlerList() 
-	{
-		return handlers;
-	}
 
-	public Faction getFaction()
-	{
-		return faction;
-	}
+    public Faction getFaction() {
+        return faction;
+    }
 
-	public String getFactionId()
-	{
-		return faction.getId();
-	}
+    public String getFactionId() {
+        return faction.getId();
+    }
 
-	public String getFactionTag()
-	{
-		return faction.getTag();
-	}
+    public String getFactionTag() {
+        return faction.getTag();
+    }
 
-	public FPlayer getFPlayer()
-	{
-		return fplayer;
-	}
+    public FPlayer getFPlayer() {
+        return fplayer;
+    }
 
-	public Player getPlayer()
-	{
-		return fplayer.getPlayer();
-	}
+    public Player getPlayer() {
+        return fplayer.getPlayer();
+    }
 }
