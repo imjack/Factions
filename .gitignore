@@ -19,3 +19,4 @@
 
 # Mac filesystem dust
 .DS_Store
+/target/

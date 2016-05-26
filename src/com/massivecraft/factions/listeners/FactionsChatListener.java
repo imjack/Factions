@@ -112,7 +112,7 @@ public class FactionsChatListener implements Listener {
             InsertIndex = eventFormat.indexOf(Conf.chatTagInsertAfterString) + Conf.chatTagInsertAfterString.length();
         } else if (!Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString)) {
             // we're using the "insert before string" method
-            InsertIndex = eventFormat.indexOf(Conf.chatTagInsertBeforeString);
+        	InsertIndex = eventFormat.indexOf(Conf.chatTagInsertBeforeString);
         } else {
             // we'll fall back to using the index place method
             InsertIndex = Conf.chatTagInsertIndex;
@@ -122,7 +122,7 @@ public class FactionsChatListener implements Listener {
         String formatStart = eventFormat.substring(0, InsertIndex) + ((Conf.chatTagPadBefore && !me.getChatTag().isEmpty()) ? " " : "");
         String formatEnd = ((Conf.chatTagPadAfter && !me.getChatTag().isEmpty()) ? " " : "") + eventFormat.substring(InsertIndex);
         String nonColoredMsgFormat = formatStart + me.getChatTag().trim() + formatEnd;
-
+        
         // Relation Colored?
         if (Conf.chatTagRelationColored) {
             // We must choke the standard message and send out individual messages to all players
