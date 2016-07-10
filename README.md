@@ -37,6 +37,7 @@ Installing
 ----------
 1. Compile using github and Maven. Once this is stable I will release it.
 1. Put Factions.jar in the plugins folder.
+You can also download it here: https://mega.nz/#!3FlR2ZpJ!RkUljAttEVtZBF8RdearGkKjaWvH6rumHbMsIHEBWh0
 
 A default config file will be created on the first run.
 
