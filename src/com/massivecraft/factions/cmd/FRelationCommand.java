@@ -2,6 +2,8 @@ package com.massivecraft.factions.cmd;
 
 
 import cn.nukkit.Server;
+import cn.nukkit.utils.TextFormat;
+
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.event.FactionRelationEvent;
@@ -53,7 +55,7 @@ public abstract class FRelationCommand extends FCommand {
         Relation oldRelation = myFaction.getRelationTo(them, true);
         myFaction.setRelationWish(them, targetRelation);
         Relation currentRelation = myFaction.getRelationTo(them, true);
-        String currentRelationColor = currentRelation.getColor();
+        TextFormat currentRelationColor = currentRelation.getColor();
 
         // if the relation change was successful
         if (targetRelation.value == currentRelation.value) {

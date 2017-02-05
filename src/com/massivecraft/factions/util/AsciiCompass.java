@@ -2,6 +2,8 @@ package com.massivecraft.factions.util;
 
 import java.util.ArrayList;
 
+import cn.nukkit.utils.TextFormat;
+
 public class AsciiCompass {
     public static AsciiCompass.Point getCompassPointForDirection(double inDegrees) {
         double degrees = (inDegrees - 180) % 360;
@@ -30,33 +32,29 @@ public class AsciiCompass {
             return null;
     }
 
-    public static ArrayList<String> getAsciiCompass(Point point, String colorActive, String colorDefault) {
+    public static ArrayList<String> getAsciiCompass(double inDegrees, TextFormat red, String colorDefault) {
         ArrayList<String> ret = new ArrayList<String>();
         String row;
 
         row = "";
-        row += Point.NW.toString(Point.NW == point, colorActive, colorDefault);
-        row += Point.N.toString(Point.N == point, colorActive, colorDefault);
-        row += Point.NE.toString(Point.NE == point, colorActive, colorDefault);
+        row += Point.NW.toString(Point.NW.asciiChar == inDegrees, red, colorDefault);
+        row += Point.N.toString(Point.N.asciiChar == inDegrees, red, colorDefault);
+        row += Point.NE.toString(Point.NE.asciiChar == inDegrees, red, colorDefault);
         ret.add(row);
 
         row = "";
-        row += Point.W.toString(Point.W == point, colorActive, colorDefault);
+        row += Point.W.toString(Point.W.asciiChar == inDegrees, red, colorDefault);
         row += colorDefault + "+";
-        row += Point.E.toString(Point.E == point, colorActive, colorDefault);
+        row += Point.E.toString(Point.E.asciiChar == inDegrees, red, colorDefault);
         ret.add(row);
 
         row = "";
-        row += Point.SW.toString(Point.SW == point, colorActive, colorDefault);
-        row += Point.S.toString(Point.S == point, colorActive, colorDefault);
-        row += Point.SE.toString(Point.SE == point, colorActive, colorDefault);
+        row += Point.SW.toString(Point.SW.asciiChar == inDegrees, red, colorDefault);
+        row += Point.S.toString(Point.S.asciiChar == inDegrees, red, colorDefault);
+        row += Point.SE.toString(Point.SE.asciiChar == inDegrees, red, colorDefault);
         ret.add(row);
 
         return ret;
-    }
-
-    public static ArrayList<String> getAsciiCompass(double inDegrees, String colorActive, String colorDefault) {
-        return getAsciiCompass(getCompassPointForDirection(inDegrees), colorActive, colorDefault);
     }
 
     public enum Point {
@@ -80,7 +78,7 @@ public class AsciiCompass {
             return String.valueOf(this.asciiChar);
         }
 
-        public String toString(boolean isActive, String colorActive, String colorDefault) {
+        public String toString(boolean isActive, TextFormat colorActive, String colorDefault) {
             return (isActive ? colorActive : colorDefault) + String.valueOf(this.asciiChar);
         }
     }

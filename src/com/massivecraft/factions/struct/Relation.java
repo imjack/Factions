@@ -2,6 +2,8 @@ package com.massivecraft.factions.struct;
 
 import com.massivecraft.factions.Conf;
 
+import cn.nukkit.utils.TextFormat;
+
 
 public enum Relation {
     MEMBER(3, "member"),
@@ -46,7 +48,7 @@ public enum Relation {
         return this.value <= relation.value;
     }
 
-    public String getColor() {
+    public TextFormat getColor() {
         if (this == MEMBER)
             return Conf.colorMember;
         else if (this == ALLY)

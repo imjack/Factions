@@ -11,13 +11,13 @@ public class Conf {
     public static boolean allowNoSlashCommand = true;
 
     // Colors
-    public static String colorMember = TextFormat.GREEN;
-    public static String colorAlly = TextFormat.LIGHT_PURPLE;
-    public static String colorNeutral = TextFormat.WHITE;
-    public static String colorEnemy = TextFormat.RED;
+    public static TextFormat colorMember = TextFormat.GREEN;
+    public static TextFormat colorAlly = TextFormat.LIGHT_PURPLE;
+    public static TextFormat colorNeutral = TextFormat.WHITE;
+    public static TextFormat colorEnemy = TextFormat.RED;
 
-    public static String colorPeaceful = TextFormat.GOLD;
-    public static String colorWar = TextFormat.DARK_RED;
+    public static TextFormat colorPeaceful = TextFormat.GOLD;
+    public static TextFormat colorWar = TextFormat.DARK_RED;
     //public static ChatColor colorWilderness = ChatColor.DARK_GREEN;
 
     // Power
