@@ -32,31 +32,35 @@ public class AsciiCompass {
             return null;
     }
 
-    public static ArrayList<String> getAsciiCompass(double inDegrees, TextFormat red, String colorDefault) {
+    public static ArrayList<String> getAsciiCompass(Point inDegrees, TextFormat red, String colorDefault) {
         ArrayList<String> ret = new ArrayList<String>();
         String row;
 
         row = "";
-        row += Point.NW.toString(Point.NW.asciiChar == inDegrees, red, colorDefault);
-        row += Point.N.toString(Point.N.asciiChar == inDegrees, red, colorDefault);
-        row += Point.NE.toString(Point.NE.asciiChar == inDegrees, red, colorDefault);
+        row += Point.NW.toString(Point.NW == inDegrees, red, colorDefault);
+        row += Point.N.toString(Point.N == inDegrees, red, colorDefault);
+        row += Point.NE.toString(Point.NE == inDegrees, red, colorDefault);
         ret.add(row);
 
         row = "";
-        row += Point.W.toString(Point.W.asciiChar == inDegrees, red, colorDefault);
+        row += Point.W.toString(Point.W == inDegrees, red, colorDefault);
         row += colorDefault + "+";
-        row += Point.E.toString(Point.E.asciiChar == inDegrees, red, colorDefault);
+        row += Point.E.toString(Point.E == inDegrees, red, colorDefault);
         ret.add(row);
 
         row = "";
-        row += Point.SW.toString(Point.SW.asciiChar == inDegrees, red, colorDefault);
-        row += Point.S.toString(Point.S.asciiChar == inDegrees, red, colorDefault);
-        row += Point.SE.toString(Point.SE.asciiChar == inDegrees, red, colorDefault);
+        row += Point.SW.toString(Point.SW == inDegrees, red, colorDefault);
+        row += Point.S.toString(Point.S == inDegrees, red, colorDefault);
+        row += Point.SE.toString(Point.SE == inDegrees, red, colorDefault);
         ret.add(row);
 
         return ret;
     }
 
+    public static ArrayList<String> getAsciiCompass(double inDegrees, TextFormat colorActive, String colorDefault) {
+        return getAsciiCompass(getCompassPointForDirection(inDegrees), colorActive, colorDefault);
+    }
+    
     public enum Point {
         N('N'),
         NE('/'),
