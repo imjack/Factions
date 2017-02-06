@@ -7,6 +7,8 @@ import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
+import cn.nukkit.utils.TextFormat;
+
 public class RelationUtil {
     public static String describeThatToMe(RelationParticipator that, RelationParticipator me, boolean ucfirst) {
         String ret = "";
@@ -88,7 +90,7 @@ public class RelationUtil {
         return null;
     }
 
-    public static String getColorOfThatToMe(RelationParticipator that, RelationParticipator me) {
+    public static TextFormat getColorOfThatToMe(RelationParticipator that, RelationParticipator me) {
         Faction thatFaction = getFaction(that);
         if (thatFaction != null) {
             if (thatFaction.isPeaceful() && thatFaction != getFaction(me)) {

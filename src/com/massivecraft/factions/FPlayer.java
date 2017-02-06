@@ -3,6 +3,8 @@ package com.massivecraft.factions;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Location;
+import cn.nukkit.utils.TextFormat;
+
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.LandClaimEvent;
 import com.massivecraft.factions.iface.RelationParticipator;
@@ -408,7 +410,7 @@ public class FPlayer extends PlayerEntity implements RelationParticipator {
     }
 
     @Override
-    public String getColorTo(RelationParticipator rp) {
+    public TextFormat getColorTo(RelationParticipator rp) {
         return RelationUtil.getColorOfThatToMe(this, rp);
     }
 

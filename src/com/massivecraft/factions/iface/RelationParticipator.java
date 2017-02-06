@@ -2,6 +2,8 @@ package com.massivecraft.factions.iface;
 
 import com.massivecraft.factions.struct.Relation;
 
+import cn.nukkit.utils.TextFormat;
+
 public interface RelationParticipator {
     public String describeTo(RelationParticipator that);
 
@@ -11,5 +13,5 @@ public interface RelationParticipator {
 
     public Relation getRelationTo(RelationParticipator that, boolean ignorePeaceful);
 
-    public String getColorTo(RelationParticipator to);
+    public TextFormat getColorTo(RelationParticipator to);
 }

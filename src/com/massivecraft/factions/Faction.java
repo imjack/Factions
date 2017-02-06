@@ -2,6 +2,8 @@ package com.massivecraft.factions;
 
 import cn.nukkit.Player;
 import cn.nukkit.level.Location;
+import cn.nukkit.utils.TextFormat;
+
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -272,7 +274,7 @@ public class Faction extends Entity implements RelationParticipator {
     }
 
     @Override
-    public String getColorTo(RelationParticipator rp) {
+    public TextFormat getColorTo(RelationParticipator rp) {
         return RelationUtil.getColorOfThatToMe(this, rp);
     }
 
