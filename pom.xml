@@ -31,8 +31,8 @@
 	</build>
 	<repositories>
 		<repository>
-			<id>mengcraft</id>
-			<url>http://ci.mengcraft.com:8080/plugin/repository/everything/</url>
+			<id>nukkitx-repo</id>
+			<url>htps://repo.nukkitx.com/main/</url>
 		</repository>
 	</repositories>
 
