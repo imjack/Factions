@@ -1,0 +1,8 @@
+checkout:
+  post:
+    - mvn clean package
+    - cp -R ./target/factions-1.0-SNAPSHOT.jar $CIRCLE_ARTIFACTS
+
+machine:
+  java:
+    version: oraclejdk8
