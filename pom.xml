@@ -31,8 +31,8 @@
 	</build>
 	<repositories>
 		<repository>
-			<id>nukkitx-repo</id>
-			<url>htps://repo.nukkitx.com/main/</url>
+			<id>nukkit-repo</id>
+			<url>https://repo.nukkitx.com/main/</url>
 		</repository>
 	</repositories>
 
