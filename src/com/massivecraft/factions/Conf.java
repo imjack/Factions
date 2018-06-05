@@ -54,9 +54,9 @@ public class Conf {
     public static boolean canLeaveWithNegativePower = true;
 
     // Configuration for faction-only chat
-    public static boolean factionOnlyChat = true;
+    public static boolean factionOnlyChat = false;
     // Configuration on the Faction tag in chat messages.
-    public static boolean chatTagEnabled = true;
+    public static boolean chatTagEnabled = false;
     public static transient boolean chatTagHandledByAnotherPlugin = false;
     public static boolean chatTagRelationColored = true;
     public static String chatTagReplaceString = "[FACTION]";
@@ -95,7 +95,7 @@ public class Conf {
     public static boolean logLandClaims = true;
     public static boolean logLandUnclaims = true;
     public static boolean logMoneyTransactions = true;
-    public static boolean logPlayerCommands = true;
+    public static boolean logPlayerCommands = false;
 
     // prevent some potential exploits
     public static boolean handleExploitObsidianGenerators = true;
