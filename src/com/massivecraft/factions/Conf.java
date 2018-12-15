@@ -315,25 +315,21 @@ public class Conf {
         territoryProtectedMaterials.add(Block.CHEST);
         territoryProtectedMaterials.add(Block.FURNACE);
         territoryProtectedMaterials.add(Block.BURNING_FURNACE);
-//		territoryProtectedMaterials.add(Block.DISPENSER);
-//		territoryProtectedMaterials.add(Block.DIODE_BLOCK_OFF);
-//		territoryProtectedMaterials.add(Block.DIODE_BLOCK_ON);
-//		territoryProtectedMaterials.add(Block.JUKEBOX);
+	    territoryProtectedMaterials.add(Block.DISPENSER);
+	    territoryProtectedMaterials.add(Block.JUKEBOX);
         territoryProtectedMaterials.add(Block.BREWING_STAND_BLOCK);
         territoryProtectedMaterials.add(Block.ENCHANTMENT_TABLE);
-//		territoryProtectedMaterials.add(Block.CAULDRON);
+        territoryProtectedMaterials.add(Block.CAULDRON_BLOCK);
         territoryProtectedMaterials.add(Block.FARMLAND);
-//		territoryProtectedMaterials.add(Block.BEACON);
+	    territoryProtectedMaterials.add(Block.BEACON);
         territoryProtectedMaterials.add(Block.ANVIL);
-//		territoryProtectedMaterials.add(Block.TRAPPED_CHEST);
-//		territoryProtectedMaterials.add(Block.DROPPER);
-//		territoryProtectedMaterials.add(Block.HOPPER);
+	    territoryProtectedMaterials.add(Block.TRAPPED_CHEST);
+	    territoryProtectedMaterials.add(Block.DROPPER);
+        territoryProtectedMaterials.add(Block.HOPPER_BLOCK);
 
-//		territoryDenyUseageMaterials.add(Item.FIREBALL);
         territoryDenyUseageMaterials.add(Item.FLINT_AND_STEEL);
         territoryDenyUseageMaterials.add(Item.BUCKET);
-//		territoryDenyUseageMaterials.add(Item.WATER_BUCKET);
-//		territoryDenyUseageMaterials.add(Item.LAVA_BUCKET);
+        territoryDenyUseageMaterials.add(Item.FIRE_CHARGE);
 
         territoryProtectedMaterialsWhenOffline.add(Block.WOOD_DOOR_BLOCK);
         territoryProtectedMaterialsWhenOffline.add(Block.IRON_DOOR_BLOCK);
@@ -347,25 +343,21 @@ public class Conf {
         territoryProtectedMaterialsWhenOffline.add(Block.CHEST);
         territoryProtectedMaterialsWhenOffline.add(Block.FURNACE);
         territoryProtectedMaterialsWhenOffline.add(Block.BURNING_FURNACE);
-//		territoryProtectedMaterialsWhenOffline.add(Block.DISPENSER);
-//		territoryProtectedMaterialsWhenOffline.add(Block.DIODE_BLOCK_OFF);
-//		territoryProtectedMaterialsWhenOffline.add(Block.DIODE_BLOCK_ON);
-//		territoryProtectedMaterialsWhenOffline.add(Block.JUKEBOX);
+	    territoryProtectedMaterialsWhenOffline.add(Block.DISPENSER);
+	    territoryProtectedMaterialsWhenOffline.add(Block.JUKEBOX);
         territoryProtectedMaterialsWhenOffline.add(Block.BREWING_STAND_BLOCK);
         territoryProtectedMaterialsWhenOffline.add(Block.ENCHANTMENT_TABLE);
-//		territoryProtectedMaterialsWhenOffline.add(Block.CAULDRON);
+	    territoryProtectedMaterialsWhenOffline.add(Block.CAULDRON_BLOCK);
         territoryProtectedMaterialsWhenOffline.add(Block.FARMLAND);
-//		territoryProtectedMaterialsWhenOffline.add(Block.BEACON);
+	    territoryProtectedMaterialsWhenOffline.add(Block.BEACON);
         territoryProtectedMaterialsWhenOffline.add(Block.ANVIL);
-//		territoryProtectedMaterialsWhenOffline.add(Block.TRAPPED_CHEST);
-//		territoryProtectedMaterialsWhenOffline.add(Block.DROPPER);
-//		territoryProtectedMaterialsWhenOffline.add(Block.HOPPER);
+	    territoryProtectedMaterialsWhenOffline.add(Block.TRAPPED_CHEST);
+	    territoryProtectedMaterialsWhenOffline.add(Block.DROPPER);
+	    territoryProtectedMaterialsWhenOffline.add(Block.HOPPER_BLOCK);
 
-//		territoryDenyUseageMaterialsWhenOffline.add(Item.FIREBALL);
+	    territoryDenyUseageMaterialsWhenOffline.add(Item.FIRE_CHARGE);
         territoryDenyUseageMaterialsWhenOffline.add(Item.FLINT_AND_STEEL);
         territoryDenyUseageMaterialsWhenOffline.add(Item.BUCKET);
-//		territoryDenyUseageMaterialsWhenOffline.add(Item.WATER_BUCKET);
-//		territoryDenyUseageMaterialsWhenOffline.add(Item.LAVA_BUCKET);
 
 //		safeZoneNerfedCreatureTypes.add(Entity.BLAZE);
 //		safeZoneNerfedCreatureTypes.add(EntityType.CAVE_SPIDER);
