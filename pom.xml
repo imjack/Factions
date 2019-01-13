@@ -6,12 +6,14 @@
 
 	<groupId>com.massivecraft</groupId>
 	<artifactId>factions</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.7.0</version>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<finalName>Factions</finalName>
 		<resources>
 			<resource>
+				<targetPath>.</targetPath>
+                <filtering>true</filtering>
 				<directory>${basedir}/src/resources</directory>
 				<includes>
 					<include>plugin.yml</include>
@@ -31,11 +33,10 @@
 	</build>
 	<repositories>
 		<repository>
-			<id>nukkit-repo</id>
+			<id>nukkitx</id>
 			<url>https://repo.nukkitx.com/main/</url>
 		</repository>
 	</repositories>
-
 	<dependencies>
 		<dependency>
 			<groupId>cn.nukkit</groupId>
@@ -49,5 +50,7 @@
 			<version>2.5</version>
 		</dependency>
 	</dependencies>
-
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	 </properties>
 </project>

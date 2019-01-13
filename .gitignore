@@ -1,22 +1,13 @@
-# Eclipse stuff
-/.classpath
-/.project
-/.settings
-
-# NetBeans
+.classpath
+.project
+.settings
 /nbproject
 /build.xml
-
-# vim
 .*.sw[a-p]
-
-# various other potential build files
 /build
 /bin
 /dist
 /*.jardesc
 /*.jar
-
-# Mac filesystem dust
 .DS_Store
-/target/
+target/
