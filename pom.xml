@@ -5,8 +5,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.massivecraft</groupId>
-	<artifactId>factions</artifactId>
-	<version>1.7.0</version>
+	<artifactId>Factions</artifactId>
+	<version>1.8.0-Nukkit</version>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<finalName>Factions</finalName>
@@ -47,7 +47,8 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.5</version>
+			<version>2.8.6</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<properties>

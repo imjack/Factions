@@ -290,9 +290,6 @@ public class FactionsPlayerListener implements Listener {
         Faction factionTo = Board.getFactionAt(to);
         boolean changedFaction = (factionFrom != factionTo);
 
-        if (changedFaction)
-            changedFaction = false;
-
         if (me.isMapAutoUpdating()) {
             me.sendMessage(Board.getMap(me.getFaction(), to, player.getLocation().getYaw()));
         } else {
@@ -361,7 +358,12 @@ public class FactionsPlayerListener implements Listener {
 
         if (block == null) return;  // clicked in air, apparently
 
-        if (!canPlayerUseBlock(player, block, false)) {
+        if (event.getAction() == PlayerInteractEvent.Action.PHYSICAL && block.getId() == Block.FARMLAND) {
+            if (!FactionsBlockListener.playerCanBuildDestroyBlock(player, new Location(block.getFloorX(), block.getFloorY(), block.getFloorZ(), 0, 0, block.getLevel()), "destroy", true)) {
+                // Hack: Farmland protection
+                event.setCancelled(true);
+            }
+        } else if (!canPlayerUseBlock(player, block, false)) {
             event.setCancelled(true);
             if (Conf.handleExploitInteractionSpam) {
                 String name = player.getName();
@@ -452,7 +454,7 @@ public class FactionsPlayerListener implements Listener {
         }
 
         // if player was banned (not just kicked), get rid of their stored info
-        if (Conf.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin.")) {
+        if (Conf.removePlayerDataWhenBanned && (event.getReasonEnum() == PlayerKickEvent.Reason.NAME_BANNED || event.getReasonEnum() == PlayerKickEvent.Reason.IP_BANNED)) {
             if (badGuy.getRole() == Role.ADMIN)
                 badGuy.getFaction().promoteNewLeader();
 

@@ -86,7 +86,7 @@ public class P extends MPlugin {
         getServer().getPluginManager().registerEvents(playerListener, this);
         getServer().getPluginManager().registerEvents(chatListener, this);
         getServer().getPluginManager().registerEvents(entityListener, this);
-        getServer().getPluginManager().registerEvents(exploitListener, this);
+        //getServer().getPluginManager().registerEvents(exploitListener, this); //currently unused
         getServer().getPluginManager().registerEvents(blockListener, this);
 
         postEnable();

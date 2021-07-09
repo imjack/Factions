@@ -212,6 +212,8 @@ public class Conf {
     public static boolean ownedMessageOnBorder = true;
     public static boolean ownedMessageInsideTerritory = true;
     public static boolean ownedMessageByChunk = false;
+    public static boolean factionHereMessage = true;
+    public static String factionHereMessageType = "tip"; // "tip", "popup", "actionbar" or "chat"
 
     public static boolean pistonProtectionThroughDenyBuild = true;
     //TODO Blocks are not enums they are static ints needs a large rewrite
@@ -315,21 +317,33 @@ public class Conf {
         territoryProtectedMaterials.add(Block.CHEST);
         territoryProtectedMaterials.add(Block.FURNACE);
         territoryProtectedMaterials.add(Block.BURNING_FURNACE);
-	    territoryProtectedMaterials.add(Block.DISPENSER);
-	    territoryProtectedMaterials.add(Block.JUKEBOX);
+        territoryProtectedMaterials.add(Block.DISPENSER);
+        territoryProtectedMaterials.add(Block.JUKEBOX);
         territoryProtectedMaterials.add(Block.BREWING_STAND_BLOCK);
         territoryProtectedMaterials.add(Block.ENCHANTMENT_TABLE);
         territoryProtectedMaterials.add(Block.CAULDRON_BLOCK);
         territoryProtectedMaterials.add(Block.FARMLAND);
-	    territoryProtectedMaterials.add(Block.BEACON);
+        territoryProtectedMaterials.add(Block.BEACON);
         territoryProtectedMaterials.add(Block.ANVIL);
-	    territoryProtectedMaterials.add(Block.TRAPPED_CHEST);
-	    territoryProtectedMaterials.add(Block.DROPPER);
+        territoryProtectedMaterials.add(Block.TRAPPED_CHEST);
+        territoryProtectedMaterials.add(Block.DROPPER);
         territoryProtectedMaterials.add(Block.HOPPER_BLOCK);
 
         territoryDenyUseageMaterials.add(Item.FLINT_AND_STEEL);
         territoryDenyUseageMaterials.add(Item.BUCKET);
         territoryDenyUseageMaterials.add(Item.FIRE_CHARGE);
+        territoryDenyUseageMaterials.add(Item.NETHERITE_HOE);
+        territoryDenyUseageMaterials.add(Item.DIAMOND_HOE);
+        territoryDenyUseageMaterials.add(Item.IRON_HOE);
+        territoryDenyUseageMaterials.add(Item.GOLD_HOE);
+        territoryDenyUseageMaterials.add(Item.STONE_HOE);
+        territoryDenyUseageMaterials.add(Item.WOODEN_HOE);
+        territoryDenyUseageMaterials.add(Item.NETHERITE_SHOVEL);
+        territoryDenyUseageMaterials.add(Item.DIAMOND_SHOVEL);
+        territoryDenyUseageMaterials.add(Item.IRON_SHOVEL);
+        territoryDenyUseageMaterials.add(Item.GOLD_SHOVEL);
+        territoryDenyUseageMaterials.add(Item.STONE_SHOVEL);
+        territoryDenyUseageMaterials.add(Item.WOODEN_SHOVEL);
 
         territoryProtectedMaterialsWhenOffline.add(Block.WOOD_DOOR_BLOCK);
         territoryProtectedMaterialsWhenOffline.add(Block.IRON_DOOR_BLOCK);
@@ -343,21 +357,33 @@ public class Conf {
         territoryProtectedMaterialsWhenOffline.add(Block.CHEST);
         territoryProtectedMaterialsWhenOffline.add(Block.FURNACE);
         territoryProtectedMaterialsWhenOffline.add(Block.BURNING_FURNACE);
-	    territoryProtectedMaterialsWhenOffline.add(Block.DISPENSER);
-	    territoryProtectedMaterialsWhenOffline.add(Block.JUKEBOX);
+        territoryProtectedMaterialsWhenOffline.add(Block.DISPENSER);
+        territoryProtectedMaterialsWhenOffline.add(Block.JUKEBOX);
         territoryProtectedMaterialsWhenOffline.add(Block.BREWING_STAND_BLOCK);
         territoryProtectedMaterialsWhenOffline.add(Block.ENCHANTMENT_TABLE);
-	    territoryProtectedMaterialsWhenOffline.add(Block.CAULDRON_BLOCK);
+        territoryProtectedMaterialsWhenOffline.add(Block.CAULDRON_BLOCK);
         territoryProtectedMaterialsWhenOffline.add(Block.FARMLAND);
-	    territoryProtectedMaterialsWhenOffline.add(Block.BEACON);
+        territoryProtectedMaterialsWhenOffline.add(Block.BEACON);
         territoryProtectedMaterialsWhenOffline.add(Block.ANVIL);
-	    territoryProtectedMaterialsWhenOffline.add(Block.TRAPPED_CHEST);
-	    territoryProtectedMaterialsWhenOffline.add(Block.DROPPER);
-	    territoryProtectedMaterialsWhenOffline.add(Block.HOPPER_BLOCK);
+        territoryProtectedMaterialsWhenOffline.add(Block.TRAPPED_CHEST);
+        territoryProtectedMaterialsWhenOffline.add(Block.DROPPER);
+        territoryProtectedMaterialsWhenOffline.add(Block.HOPPER_BLOCK);
 
-	    territoryDenyUseageMaterialsWhenOffline.add(Item.FIRE_CHARGE);
+        territoryDenyUseageMaterialsWhenOffline.add(Item.FIRE_CHARGE);
         territoryDenyUseageMaterialsWhenOffline.add(Item.FLINT_AND_STEEL);
         territoryDenyUseageMaterialsWhenOffline.add(Item.BUCKET);
+        territoryDenyUseageMaterialsWhenOffline.add(Item.NETHERITE_HOE);
+        territoryDenyUseageMaterialsWhenOffline.add(Item.DIAMOND_HOE);
+        territoryDenyUseageMaterialsWhenOffline.add(Item.IRON_HOE);
+        territoryDenyUseageMaterialsWhenOffline.add(Item.GOLD_HOE);
+        territoryDenyUseageMaterialsWhenOffline.add(Item.STONE_HOE);
+        territoryDenyUseageMaterialsWhenOffline.add(Item.WOODEN_HOE);
+        territoryDenyUseageMaterialsWhenOffline.add(Item.NETHERITE_SHOVEL);
+        territoryDenyUseageMaterialsWhenOffline.add(Item.DIAMOND_SHOVEL);
+        territoryDenyUseageMaterialsWhenOffline.add(Item.IRON_SHOVEL);
+        territoryDenyUseageMaterialsWhenOffline.add(Item.GOLD_SHOVEL);
+        territoryDenyUseageMaterialsWhenOffline.add(Item.STONE_SHOVEL);
+        territoryDenyUseageMaterialsWhenOffline.add(Item.WOODEN_SHOVEL);
 
 //		safeZoneNerfedCreatureTypes.add(Entity.BLAZE);
 //		safeZoneNerfedCreatureTypes.add(EntityType.CAVE_SPIDER);

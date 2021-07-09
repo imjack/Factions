@@ -10,4 +10,6 @@
 /*.jardesc
 /*.jar
 .DS_Store
-target/
+/target
+.idea
+*.iml

@@ -42,7 +42,7 @@ public class CmdCreate extends FCommand {
         }
 
         ArrayList<String> tagValidationErrors = Factions.validateTag(tag);
-        if (tagValidationErrors.size() > 0) {
+        if (!tagValidationErrors.isEmpty()) {
             sendMessage(tagValidationErrors);
             return;
         }

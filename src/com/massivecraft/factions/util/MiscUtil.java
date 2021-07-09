@@ -58,17 +58,17 @@ public class MiscUtil {
     }
 
     public static String getComparisonString(String str) {
-        String ret = "";
+        StringBuilder ret = new StringBuilder();
 
         str = TextFormat.clean(str);
         str = str.toLowerCase();
 
         for (char c : str.toCharArray()) {
             if (substanceChars.contains(String.valueOf(c))) {
-                ret += c;
+                ret.append(c);
             }
         }
-        return ret.toLowerCase();
+        return ret.toString().toLowerCase();
     }
 
 }
