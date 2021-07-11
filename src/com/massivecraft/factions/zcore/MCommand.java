@@ -93,7 +93,7 @@ public abstract class MCommand<T extends MPlugin> {
         this.commandChain = commandChain;
 
         // Is there a matching sub command?
-        if (args.size() > 0) {
+        if (!args.isEmpty()) {
             for (MCommand<?> subCommand : this.subCommands) {
                 if (subCommand.aliases.contains(args.get(0))) {
                     args.remove(0);
@@ -219,7 +219,7 @@ public abstract class MCommand<T extends MPlugin> {
             args.add("[" + optionalArg.getKey() + val + "]");
         }
 
-        if (args.size() > 0) {
+        if (!args.isEmpty()) {
             ret.append(p.txt.parseTags("<p> "));
             ret.append(TextUtil.implode(args, " "));
         }
@@ -377,7 +377,7 @@ public abstract class MCommand<T extends MPlugin> {
 
         if (name != null) {
             List<Player> players = Arrays.asList(Server.getInstance().matchPlayer(name));
-            if (players.size() > 0) {
+            if (!players.isEmpty()) {
                 ret = players.get(0);
             }
         }

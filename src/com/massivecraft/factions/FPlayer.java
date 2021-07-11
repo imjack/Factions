@@ -297,7 +297,7 @@ public class FPlayer extends PlayerEntity implements RelationParticipator {
 
     public String getNameAndSomething(String something) {
         String ret = this.role.getPrefix();
-        if (something.length() > 0) {
+        if (!something.isEmpty()) {
             ret += something + " ";
         }
         ret += this.getName();
@@ -525,12 +525,33 @@ public class FPlayer extends PlayerEntity implements RelationParticipator {
     }
 
     public void sendFactionHereMessage() {
+        if (!Conf.factionHereMessage) {
+            return;
+        }
         Faction factionHere = Board.getFactionAt(this.getLastStoodAt());
         String msg = P.p.txt.parse("<i>") + " ~ " + factionHere.getTag(this);
-        if (factionHere.getDescription().length() > 0) {
+        if (!factionHere.getDescription().isEmpty()) {
             msg += " - " + factionHere.getDescription();
         }
-        this.sendMessage(msg);
+        Player player = this.getPlayer();
+        if (player != null) {
+            switch (Conf.factionHereMessageType) {
+                case "tip":
+                    player.sendTip(msg);
+                    break;
+                case "popup":
+                    player.sendPopup(msg);
+                    break;
+                case "actionbar":
+                    player.sendActionBar(msg);
+                    break;
+                case "chat":
+                    player.sendMessage(msg);
+                    break;
+                default:
+                    player.sendMessage("§cERROR! Invalid factionHereMessageType. Must be 'tip', 'popup', 'actionbar' or 'chat'. Please report this to admin.");
+            }
+        }
     }
 
     // -------------------------------

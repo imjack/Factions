@@ -290,9 +290,6 @@ public class FactionsPlayerListener implements Listener {
         Faction factionTo = Board.getFactionAt(to);
         boolean changedFaction = (factionFrom != factionTo);
 
-        if (changedFaction)
-            changedFaction = false;
-
         if (me.isMapAutoUpdating()) {
             me.sendMessage(Board.getMap(me.getFaction(), to, player.getLocation().getYaw()));
         } else {
@@ -353,7 +350,7 @@ public class FactionsPlayerListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.isCancelled()) return;
         // only need to check right-clicks and physical as of MC 1.4+; good performance boost
-        if (event.getAction() != PlayerInteractEvent.RIGHT_CLICK_BLOCK && event.getAction() != PlayerInteractEvent.PHYSICAL)
+        if (event.getAction() != PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && event.getAction() != PlayerInteractEvent.Action.PHYSICAL)
             return;
 
         Block block = event.getBlock();
@@ -361,7 +358,12 @@ public class FactionsPlayerListener implements Listener {
 
         if (block == null) return;  // clicked in air, apparently
 
-        if (!canPlayerUseBlock(player, block, false)) {
+        if (event.getAction() == PlayerInteractEvent.Action.PHYSICAL && block.getId() == Block.FARMLAND) {
+            if (!FactionsBlockListener.playerCanBuildDestroyBlock(player, new Location(block.getFloorX(), block.getFloorY(), block.getFloorZ(), 0, 0, block.getLevel()), "destroy", true)) {
+                // Hack: Farmland protection
+                event.setCancelled(true);
+            }
+        } else if (!canPlayerUseBlock(player, block, false)) {
             event.setCancelled(true);
             if (Conf.handleExploitInteractionSpam) {
                 String name = player.getName();
@@ -380,7 +382,7 @@ public class FactionsPlayerListener implements Listener {
             return;
         }
 
-        if (event.getAction() != PlayerInteractEvent.RIGHT_CLICK_BLOCK)
+        if (event.getAction() != PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
             return;  // only interested on right-clicks for below
 
         if (!playerCanUseItemHere(player, new Location(block.getFloorX(), block.getFloorY(), block.getFloorZ(), 0, 0, block.getLevel()), event.getItem(), false)) {
@@ -452,7 +454,7 @@ public class FactionsPlayerListener implements Listener {
         }
 
         // if player was banned (not just kicked), get rid of their stored info
-        if (Conf.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin.")) {
+        if (Conf.removePlayerDataWhenBanned && (event.getReasonEnum() == PlayerKickEvent.Reason.NAME_BANNED || event.getReasonEnum() == PlayerKickEvent.Reason.IP_BANNED)) {
             if (badGuy.getRole() == Role.ADMIN)
                 badGuy.getFaction().promoteNewLeader();
 

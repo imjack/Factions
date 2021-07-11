@@ -29,18 +29,6 @@ You may also read the documentation ingame as the plugin ships with an ingame he
 * `/f help 2`
 * `/f help 3`
 
-Note that you may optionally skip the slash and just write
-
-* `f`
-
-Installing
-----------
-1. Compile using github and Maven. Once this is stable I will release it.
-1. Put Factions.jar in the plugins folder.
-You can also download it here: https://mega.nz/#!3FlR2ZpJ!RkUljAttEVtZBF8RdearGkKjaWvH6rumHbMsIHEBWh0
-
-A default config file will be created on the first run.
-
 License
 ----------
 This project has a LGPL license.<br>

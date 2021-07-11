@@ -39,7 +39,7 @@ public class CmdTag extends FCommand {
 
         ArrayList<String> errors = new ArrayList<String>();
         errors.addAll(Factions.validateTag(tag));
-        if (errors.size() > 0) {
+        if (!errors.isEmpty()) {
             sendMessage(errors);
             return;
         }

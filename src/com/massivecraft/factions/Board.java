@@ -170,20 +170,20 @@ public class Board {
         // For each row
         for (int dz = 0; dz < height; dz++) {
             // Draw and add that row
-            String row = "";
+            StringBuilder row = new StringBuilder();
             for (int dx = 0; dx < width; dx++) {
                 if (dx == halfWidth && dz == halfHeight) {
-                    row += TextFormat.AQUA + "+";
+                    row.append(TextFormat.AQUA + "+");
                 } else {
                     FLocation flocationHere = topLeft.getRelative(dx, dz);
                     Faction factionHere = getFactionAt(flocationHere);
                     Relation relation = faction.getRelationTo(factionHere);
                     if (factionHere.isNone()) {
-                        row += TextFormat.GRAY + "-";
+                        row.append(TextFormat.GRAY + "-");
                     } else if (factionHere.isSafeZone()) {
-                        row += Conf.colorPeaceful + "+";
+                        row.append(Conf.colorPeaceful).append("+");
                     } else if (factionHere.isWarZone()) {
-                        row += TextFormat.DARK_RED + "+";
+                        row.append(TextFormat.DARK_RED + "+");
                     } else if
                             (
                             factionHere == faction
@@ -199,13 +199,13 @@ public class Board {
                         if (!fList.containsKey(factionHere.getTag()))
                             fList.put(factionHere.getTag(), Conf.mapKeyChrs[chrIdx++]);
                         char tag = fList.get(factionHere.getTag());
-                        row += factionHere.getColorTo(faction) + "" + tag;
+                        row.append(factionHere.getColorTo(faction)).append(tag);
                     } else {
-                        row += TextFormat.GRAY + "-";
+                        row.append(TextFormat.GRAY + "-");
                     }
                 }
             }
-            ret.add(row);
+            ret.add(row.toString());
         }
 
         // Get the compass
@@ -218,11 +218,11 @@ public class Board {
 
         // Add the faction key
         if (Conf.showMapFactionKey) {
-            String fRow = "";
+            StringBuilder fRow = new StringBuilder();
             for (String key : fList.keySet()) {
-                fRow += String.format("%s%s: %s ", TextFormat.GRAY, fList.get(key), key);
+                fRow.append(String.format("%s%s: %s ", TextFormat.GRAY, fList.get(key), key));
             }
-            ret.add(fRow);
+            ret.add(fRow.toString());
         }
 
         return ret;

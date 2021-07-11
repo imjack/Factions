@@ -610,16 +610,16 @@ public class Faction extends Entity implements RelationParticipator {
             return "";
         }
 
-        String ownerList = "";
+        StringBuilder ownerList = new StringBuilder();
 
         Iterator<String> iter = ownerData.iterator();
         while (iter.hasNext()) {
-            if (!ownerList.isEmpty()) {
-                ownerList += ", ";
+            if (ownerList.length() > 0) {
+                ownerList.append(", ");
             }
-            ownerList += iter.next();
+            ownerList.append(iter.next());
         }
-        return ownerList;
+        return ownerList.toString();
     }
 
     public boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc) {

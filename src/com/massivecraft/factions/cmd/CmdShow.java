@@ -91,43 +91,43 @@ public class CmdShow extends FCommand {
         sendMessage(enemyList);
 
         // List the members...
-        String onlineList = p.txt.parse("<a>") + "Members online: ";
-        String offlineList = p.txt.parse("<a>") + "Members offline: ";
+        StringBuilder onlineList = new StringBuilder(p.txt.parse("<a>") + "Members online: ");
+        StringBuilder offlineList = new StringBuilder(p.txt.parse("<a>") + "Members offline: ");
         for (FPlayer follower : admins) {
             listpart = follower.getNameAndTitle(fme) + p.txt.parse("<i>") + ", ";
             if (follower.isOnlineAndVisibleTo(me)) {
-                onlineList += listpart;
+                onlineList.append(listpart);
             } else {
-                offlineList += listpart;
+                offlineList.append(listpart);
             }
         }
         for (FPlayer follower : mods) {
             listpart = follower.getNameAndTitle(fme) + p.txt.parse("<i>") + ", ";
             if
                     (follower.isOnlineAndVisibleTo(me)) {
-                onlineList += listpart;
+                onlineList.append(listpart);
             } else {
-                offlineList += listpart;
+                offlineList.append(listpart);
             }
         }
         for (FPlayer follower : normals) {
             listpart = follower.getNameAndTitle(fme) + p.txt.parse("<i>") + ", ";
             if (follower.isOnlineAndVisibleTo(me)) {
-                onlineList += listpart;
+                onlineList.append(listpart);
             } else {
-                offlineList += listpart;
+                offlineList.append(listpart);
             }
         }
 
-        if (onlineList.endsWith(", ")) {
-            onlineList = onlineList.substring(0, onlineList.length() - 2);
+        if (onlineList.toString().endsWith(", ")) {
+            onlineList = new StringBuilder(onlineList.substring(0, onlineList.length() - 2));
         }
-        if (offlineList.endsWith(", ")) {
-            offlineList = offlineList.substring(0, offlineList.length() - 2);
+        if (offlineList.toString().endsWith(", ")) {
+            offlineList = new StringBuilder(offlineList.substring(0, offlineList.length() - 2));
         }
 
-        sendMessage(onlineList);
-        sendMessage(offlineList);
+        sendMessage(onlineList.toString());
+        sendMessage(offlineList.toString());
     }
 
 }

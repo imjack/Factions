@@ -79,7 +79,6 @@ public class P extends MPlugin {
         this.cmdAutoHelp = new CmdAutoHelp();
         this.getBaseCommands().add(cmdBase);
 
-
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
         startAutoLeaveTask(false);
 
@@ -87,12 +86,8 @@ public class P extends MPlugin {
         getServer().getPluginManager().registerEvents(playerListener, this);
         getServer().getPluginManager().registerEvents(chatListener, this);
         getServer().getPluginManager().registerEvents(entityListener, this);
-        getServer().getPluginManager().registerEvents(exploitListener, this);
+        //getServer().getPluginManager().registerEvents(exploitListener, this); //currently unused
         getServer().getPluginManager().registerEvents(blockListener, this);
-
-        //// TODO: 03/01/2016 unsure what this will do and nukkit doesn't have anything like it
-        // since some other plugins execute commands directly through this command interface, provide it
-//		this.getCommand(this.refCommand).setExecutor(this);
 
         postEnable();
         this.loadSuccessful = true;
@@ -133,7 +128,7 @@ public class P extends MPlugin {
 
         if (Conf.autoLeaveRoutineRunsEveryXMinutes > 0.0) {
             int ticks = (int) (20 * 60 * Conf.autoLeaveRoutineRunsEveryXMinutes);
-            AutoLeaveTask = getServer().getScheduler().scheduleRepeatingTask(new AutoLeaveTask(), ticks).getTaskId();
+            AutoLeaveTask = getServer().getScheduler().scheduleRepeatingTask(this, new AutoLeaveTask(), ticks).getTaskId();
         }
     }
 

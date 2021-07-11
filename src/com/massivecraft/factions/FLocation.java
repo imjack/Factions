@@ -49,7 +49,7 @@ public class FLocation {
     }
 
     public FLocation(Block block) {
-        this(block.getLevel().getName(), block.getFloorX(), block.getFloorZ());
+        this(block.getLevel().getName(), blockToChunk(block.getFloorX()), blockToChunk(block.getFloorZ()));
     }
 
     //----------------------------------------------//

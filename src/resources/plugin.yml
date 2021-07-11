@@ -1,15 +1,15 @@
 name: Factions
-version: "1.6.9.5"
+version: "${pom.version}"
 api: ["1.0.0"]
 main: com.massivecraft.factions.P
 authors: [Olof Larsson, Brett Flannigan]
 commands:
   factions:
-    description: Reference command for Factions.
+    description: Reference command for Factions
     aliases: [f]
 permissions:
   factions.kit.admin:
-    description: All faction permissions.
+    description: All faction permissions
     children:
       factions.kit.mod: true
       factions.config: true
@@ -21,7 +21,7 @@ permissions:
     children:
       factions.kit.admin: true
   factions.kit.mod:
-    description: All faction permissions but configuration and persistance.
+    description: All faction permissions but configuration and persistance
     children:
       factions.kit.halfmod: true
       factions.disband.any: true
@@ -47,12 +47,12 @@ permissions:
       factions.chatspy: true
   factions.kit.fullplayer:
     default: true
-    description: Can also create new factions.
+    description: Can also create new factions
     children:
       factions.kit.halfplayer: true
       factions.create: true
   factions.kit.halfplayer:
-    description: Can do all but create factions.
+    description: Can do all but create factions
     children:
       factions.admin: true
       factions.autoclaim: true
